@@ -20,9 +20,9 @@ Phone.include({
      */
     init() {
         this._super.apply(this, arguments);
-        //this.enableSMS = 'enable_sms' in this.attrs.options ? this.attrs.options.enable_sms : true;
+        this.enableWAPP = 'enable_wapp' in this.attrs.options ? this.attrs.options.enable_wapp : true;
         // reinject in nodeOptions (and thus in this.attrs) to signal the property
-        //this.attrs.options.enable_sms = this.enableSMS;
+        this.attrs.options.enable_wapp = this.enableWAPP;
     },
     /**
      * When the send SMS button is displayed, $el becomes a div wrapping
@@ -33,8 +33,7 @@ Phone.include({
      */
     getFocusableElement() {
 
-    //    if (this.enableSMS && this.mode === 'readonly') {
-        if (this.mode === 'readonly') {
+        if (this.enableWAPP && this.mode === 'readonly') {
             return this.$el.filter('.' + this.className);
         }
 
@@ -52,30 +51,7 @@ Phone.include({
     _onClickWAPP: function (ev) {
         ev.preventDefault();
         ev.stopPropagation();
-
-        /*
-        var context = session.user_context;
-
-        context = _.extend({}, context, {
-            default_res_model: this.model,
-            default_res_id: parseInt(this.res_id),
-            default_number_field_name: this.name,
-            default_composition_mode: 'comment',
-        });
-        var self = this;
-
-        return this.do_action({
-            title: _t('Send SMS Text Message'),
-            type: 'ir.actions.act_window',
-            res_model: 'sms.composer',
-            target: 'new',
-            views: [[false, 'form']],
-            context: context,
-        }, {
-        on_close: function () {
-            self.trigger_up('reload');
-        }});
-        */
+        window.open(ev.currentTarget.href);
     },
 
     /**
@@ -87,9 +63,7 @@ Phone.include({
     _renderReadonly: function () {
         var def = this._super.apply(this, arguments);
 
-        //if (this.enableSMS && this.value) {
-
-        if (this.value) {
+        if (this.enableWAPP && this.value) {
             var phone = this.value.match(/\d+/g).join('');
             var urlWAPP = 'https://wa.me/' + phone;
 
@@ -101,7 +75,7 @@ Phone.include({
                 html: $('<small>', {class: 'font-weight-bold ml-1', html: 'WAPP'})
             });
             $composerButton.prepend($('<i>', {class: 'fa fa-whatsapp'}));
-            //$composerButton.on('click', this._onClickWAPP.bind(this));
+            $composerButton.on('click', this._onClickWAPP.bind(this));
             this.$el = this.$el.add($composerButton);
         }
         return def;
