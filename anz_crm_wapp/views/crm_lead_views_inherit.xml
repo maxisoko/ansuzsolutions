@@ -1,10 +1,25 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
     <data>
+        <record id="crm_case_tree_view_oppor_inherit_anz_wapp" model="ir.ui.view">
+            <field name="name">crm.lead.tree.oppor.inherit.anz.wapp</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.crm_case_tree_view_oppor"></field>
+            <field name="arch" type="xml">
+                <field name="phone" position="replace">
+                    <field name="phone" optional="show" widget="phone" options="{'enable_sms': false}" />
+                </field>
+
+                <field name="phone" position="after">
+                    <field name="mobile" optional="hide" widget="phone" options="{'enable_sms': false, 'enable_wapp':true}" />
+                </field>
+            </field>
+        </record>
+
         <record id="crm_case_tree_view_leads_inherit_anz_wapp" model="ir.ui.view">
             <field name="name">crm.lead.tree.lead.inherit.anz.wapp</field>
             <field name="model">crm.lead</field>
-            <field name="inherit_id" ref="crm.crm_case_tree_view_oppor"></field>
+            <field name="inherit_id" ref="crm.crm_case_tree_view_leads"></field>
             <field name="arch" type="xml">
                 <field name="phone" position="replace">
                     <field name="phone" optional="show" widget="phone" options="{'enable_sms': false}" />
